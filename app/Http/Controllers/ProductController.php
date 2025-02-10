@@ -173,5 +173,6 @@ class ProductController extends Controller
             'status' => true,
             'message' => 'Product deleted successfully'
         ]);
+
     }
 }
