@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('store_name');
+            $table->string('phone');
+            $table->text('address');
+            $table->string('image')->nullable();
             $table->integer('total_order')->default(0);
             $table->decimal('total_amount',  15, 2)->default(0);
             $table->integer('total_canceled_order')->default(0);

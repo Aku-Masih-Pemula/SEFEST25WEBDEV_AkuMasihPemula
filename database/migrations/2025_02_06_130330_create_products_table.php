@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->integer('stock')->default(1);
-            $table->enum('status', ['banned', 'unbanned']);
+            $table->enum('status', ['banned', 'verified']);
             $table->timestamps();
         });
     }

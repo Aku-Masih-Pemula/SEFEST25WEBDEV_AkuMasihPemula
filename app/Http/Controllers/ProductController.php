@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::with(['seller', 'images'])
-            ->where('status', 'unbanned')
+            ->where('status', 'verified')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -47,6 +47,7 @@ class ProductController extends Controller
             'seller_id' => $user->id,
             'category_id' => $validated['category_id'],
             'name' => $validated['name'],
+
             'description' => $validated['description'],
             'price' => $validated['price'],
             'stock' => $validated['stock'],

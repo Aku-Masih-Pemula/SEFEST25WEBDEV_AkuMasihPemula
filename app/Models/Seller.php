@@ -11,6 +11,9 @@ class Seller extends Model
         'store_name',
         'total_order',
         'total_amount',
-        'total_canceled_order'
+        'total_canceled_order',
+        'phone',
+        'address',
+        'image'
     ];
 }

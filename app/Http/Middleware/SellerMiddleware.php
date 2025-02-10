@@ -22,7 +22,11 @@ class SellerMiddleware
         if ($request->route('id')) {
             $product = Product::find($request->route('id'));
 
-            if (!$product || $product->seller_id !== $currentUser->id) {
+            if(!$product) {
+                return response()->json(['message' => 'Product not found'], 404);
+            }
+
+            if ($product->seller_id !== $currentUser->id) {
                 return response()->json(['message' => 'Invalid account'], 403);
             }
         }

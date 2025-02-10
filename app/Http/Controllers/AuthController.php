@@ -24,7 +24,6 @@ class AuthController extends Controller
       'name' => 'required|string|max:255',
       'email' => 'required|email|string|unique:users,email',
       'password' => 'required|string|min:6',
-      'phone' => 'required|string|max:16|unique:users,phone',
     ]);
 
     // Create the user
@@ -32,8 +31,8 @@ class AuthController extends Controller
       'name' => $validated['name'],
       'email' => $validated['email'],
       'password' => Hash::make($validated['password']),
-      'phone' => $validated['phone'],
-      'role' => 'consumer'
+      'role' => 'consumer',
+      'status' => 'verified',
     ]);
 
     // Generate the token
@@ -50,8 +49,11 @@ class AuthController extends Controller
 
   public function registerSeller(Request $request)
   {
-    $request->validate([
-      'store_name' => 'required|string|max:255'
+    $validated = $request->validate([
+      'store_name' => 'required|string|max:255',
+      'phone' => 'required|string',
+      'address' => 'required|string|max:255',
+      'image' => 'nullable|file|mimes:png,jpg,jpeg|max:5000'
     ]);
 
     $user = Auth::user();
@@ -64,9 +66,18 @@ class AuthController extends Controller
 
     $user->update(['role' => 'seller']);
 
+    $path = null;
+    if ($request->hasFile('image')) {
+      $filename = uniqid() . '.' . $request->image->getClientOriginalExtension();
+      $path = $request->image->storeAs('seller_image', $filename, 'public');
+    }
+
     $seller = Seller::create([
       'user_id' => $user->id,
-      'store_name' => $request->store_name,
+      'store_name' => $validated['store_name'],
+      'phone' => $validated['phone'],
+      'address' => $validated['address'],
+      'image' => $path,
     ]);
 
     return response()->json([
